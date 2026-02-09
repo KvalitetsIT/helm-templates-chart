@@ -53,12 +53,17 @@ jobs:
         uses: helm/kind-action@92086f6be054225fa813e0a4b13787fc9088faab # v1.13.0
         if: steps.list-changed.outputs.changed == 'true'
 
-      - name: Install Sealed Secrets CRD (and controller)
+      - name: Install Sealed Secrets CRD
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.34.0/controller.yaml
+          kubectl apply -f https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/refs/tags/v0.34.0/helm/sealed-secrets/crds/bitnami.com_sealedsecrets.yaml
           kubectl wait --for=condition=Established crd/sealedsecrets.bitnami.com --timeout=60s
 
+      - name: Install CiliumNetworkPolicy CRD
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.19.0/pkg/k8s/apis/cilium.io/client/crds/v2/ciliumnetworkpolicies.yaml
+          kubectl wait --for=condition=Established crd/ciliumnetworkpolicies.cilium.io --timeout=60s
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
