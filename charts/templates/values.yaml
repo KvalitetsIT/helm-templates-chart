@@ -1,0 +1,9 @@
+# -- Map of SealedSecret resources to render.
+# Each top-level key becomes the SealedSecret name.
+sealedSecrets:
+
+# -- Map of Kubernetes NetworkPolicy resources to render.
+networkPolicies: {}
+
+# -- Map of CiliumNetworkPolicy resources to render.
+cilliumNetworkPolicies: {}
