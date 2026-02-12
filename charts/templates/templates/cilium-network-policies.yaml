@@ -2,6 +2,10 @@
 {{- if not (hasKey $value "endpointSelector") }}
   {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}
 {{- end }}
+
+{{- include "cnp.applyDefaultPortProtocols" $value }}
+{{- $ingressRules := $value.ingress | default (list) }}
+{{- $egressRules := $value.egress | default (list) }}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -15,12 +19,12 @@ spec:
   description: {{ . | quote }}
   {{- end }}
   endpointSelector: {{- toYaml $value.endpointSelector | nindent 4 }}
-  {{- with $value.ingress }}
+  {{- if $ingressRules }}
   ingress:
-    {{- include "cnp.renderRules" (dict "rules" . "indent" 4) }}
+    {{- toYaml $ingressRules | nindent 4 }}
   {{- end }}
-  {{- with $value.egress }}
+  {{- if $egressRules }}
   egress:
-    {{- include "cnp.renderRules" (dict "rules" . "indent" 4) }}
+    {{- toYaml $egressRules | nindent 4 }}
   {{- end }}
 {{- end }}

@@ -76,6 +76,7 @@ sealedSecrets:
     template:
       data:
         conn_string: "postgresql://user:{{ .password }}@localhost/mydatabase"
+
 ```
 
 ----------------------------------------------

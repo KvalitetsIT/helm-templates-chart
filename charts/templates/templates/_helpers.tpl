@@ -4,14 +4,12 @@ app.kubernetes.io/instance: {{ .Release.Name | quote }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
 {{- end }}
 
-{{- define "cnp.renderRules" -}}
-{{- $rules := deepCopy .rules -}}
-{{- range $rule := $rules -}}
-{{- range $toPorts := $rule.toPorts | default (list) -}}
-{{- range $port := $toPorts.ports | default (list) -}}
-{{- $_ := set $port "protocol" (default "TCP" $port.protocol) -}}
+{{- define "cnp.applyDefaultPortProtocols" -}}
+{{- range (concat (.ingress | default (list)) (.egress | default (list))) -}}
+  {{- range (.toPorts | default (list)) -}}
+    {{- range (.ports | default (list)) -}}
+     {{- $_ := set . "protocol" (default "TCP" .protocol) -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
-{{- end -}}
-{{- end -}}
-{{- toYaml $rules | nindent .indent -}}
 {{- end }}
