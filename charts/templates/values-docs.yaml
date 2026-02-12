@@ -6,7 +6,7 @@
 sealedSecrets:
 
   '\<example-secret>':
-    
+
     encryptedData:
       # -- Required. Encrypted secret data.
       # @default -- {}
@@ -32,6 +32,12 @@ sealedSecrets:
         # @section -- Sealed Secrets
         annotations:
           <annotation-key>: <annotation-value>
+
+      data:
+        # -- Optional. Additional data fields for the Secret template.
+        # @default -- {}
+        # @section -- Sealed Secrets
+        '\<data-key>': <data-value>
 
 # -- Map of Kubernetes NetworkPolicy resources to render.
 # Each top-level key becomes the NetworkPolicy name.

@@ -21,6 +21,7 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | sealedSecrets.\<example-secret>.template.type | string | "Opaque" | Optional. Kubernetes Secret type. |
 | sealedSecrets.\<example-secret>.template.metadata.labels | object | {} | Optional. Additional labels for the Secret template. common.labels are always included. |
 | sealedSecrets.\<example-secret>.template.metadata.annotations | object | {} | Optional. Annotations for the Secret template metadata. |
+| sealedSecrets.\<example-secret>.template.data.\<data-key> | string | {} | Optional. Additional data fields for the Secret template. |
 
 ### Other Values
 
@@ -68,6 +69,24 @@ sealedSecrets:
       tls.key: dmVyeS1zZWNyZXQtdGxzLWtleTAxMjM0NTY3ODk=
     template:
       type: kubernetes.io/tls
+
+  fourth-secret:
+    encryptedData:
+      secret: dmVyeS1zZWNyZXQtZW52MDEyMzQ1Njc4OQ==
+    template:
+      metadata:
+        labels:
+          app.kubernetes.io/name: app-four
+          team: platform
+        annotations:
+          app.kubernetes.io/managed-by: "sealed-secrets"
+          config.kubernetes.io/version: "1"
+      data:
+        BLAH: dmVyeS1zZWNyZXQtZGF0YTEyMzQ1Njc4OQ==
+        EXTRA_VAR: |
+          {
+            "conn": "{{ toJson .secret }}"
+          }
 
 ```
 
