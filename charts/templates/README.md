@@ -72,22 +72,10 @@ sealedSecrets:
 
   fourth-secret:
     encryptedData:
-      secret: dmVyeS1zZWNyZXQtZW52MDEyMzQ1Njc4OQ==
+      password: dmVyeS1zZWNyZXQtZW52MDEyMzQ1Njc4OQ==
     template:
-      metadata:
-        labels:
-          app.kubernetes.io/name: app-four
-          team: platform
-        annotations:
-          app.kubernetes.io/managed-by: "sealed-secrets"
-          config.kubernetes.io/version: "1"
       data:
-        BLAH: dmVyeS1zZWNyZXQtZGF0YTEyMzQ1Njc4OQ==
-        EXTRA_VAR: |
-          {
-            "conn": "{{ toJson .secret }}"
-          }
-
+        conn_string: "postgresql://user:{{ .password }}@localhost/mydatabase"
 ```
 
 ----------------------------------------------
