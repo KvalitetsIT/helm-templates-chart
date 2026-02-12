@@ -3,7 +3,7 @@
   {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}
 {{- end }}
 
-{{- include "cnp.applyDefaultPortProtocols" $value }}
+{{- include "cnp.applyDefaultPorts" $value }}
 {{- $ingressRules := $value.ingress | default (list) }}
 {{- $egressRules := $value.egress | default (list) }}
 ---

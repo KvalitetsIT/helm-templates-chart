@@ -102,34 +102,17 @@ ciliumNetworkPolicies:
     endpointSelector: {}
     ingress:
       - {}
-
     egress:
       - {}
 
   app-1-netpol:
     endpointSelector:
       matchLabels:
-        app: app-1
-    ingress:
-      - fromEndpoints:
-          - matchLabels:
-              app: app-2
-          - matchLabels:
-              app: app-3
-
-    egress:
-      - {}
-
-  app-2-netpol:
-    endpointSelector:
-      matchLabels:
         app: app-2
-
     ingress:
       - fromEndpoints:
           - matchLabels:
               app: app-1
-
     egress:
       - toEndpoints:
           - matchLabels:
@@ -138,11 +121,10 @@ ciliumNetworkPolicies:
           - ports:
               - port: "80"
 
-  app-3-netpol:
+  app-2-netpol:
     endpointSelector:
       matchLabels:
         app: app-3
-
     ingress:
       - fromEndpoints:
           - matchLabels:
@@ -155,20 +137,26 @@ ciliumNetworkPolicies:
               app: app-1
         toPorts:
           - ports:
-              - port: "5321"
+              - port: 5321
                 protocol: UDP
 
   dns-policy:
     description: "Allow egress DNS traffic to kube-dns"
     endpointSelector: {}
-    egress:
-      - toEndpoints:
-          - matchLabels:
-              k8s-app: kube-dns
-        toPorts:
-          - ports:
-              - port: "53"
-                protocol: UDP
+      egress:
+        - toEndpoints:
+            - matchLabels:
+                "k8s:io.kubernetes.pod.namespace": kube-system
+                "k8s:k8s-app": kube-dns
+          toPorts:
+            - ports:
+                - port: "53"
+                  protocol: UDP
+                - port: "53"
+                  protocol: TCP
+              rules:
+                dns:
+                  - matchPattern: "*"
 
 ```
 
