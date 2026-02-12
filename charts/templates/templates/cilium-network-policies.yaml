@@ -1,0 +1,26 @@
+{{- range $name, $value := .Values.ciliumNetworkPolicies }}
+{{- if not (hasKey $value "endpointSelector") }}
+  {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}
+{{- end }}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ $name | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    {{- include "common.labels" $ | nindent 4 }}
+spec:
+  {{- with $value.description }}
+  description: {{ . | quote }}
+  {{- end }}
+  endpointSelector: {{- toYaml $value.endpointSelector | nindent 4 }}
+  {{- with $value.ingress }}
+  ingress:
+    {{- include "cnp.renderRules" (dict "rules" . "indent" 4) }}
+  {{- end }}
+  {{- with $value.egress }}
+  egress:
+    {{- include "cnp.renderRules" (dict "rules" . "indent" 4) }}
+  {{- end }}
+{{- end }}

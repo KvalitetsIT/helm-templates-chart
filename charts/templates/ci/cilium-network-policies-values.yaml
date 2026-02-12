@@ -1,0 +1,61 @@
+ciliumNetworkPolicies:
+  default-deny:
+    description: "Default deny all ingress and egress traffic"
+    endpointSelector: {}
+    ingress:
+      - {}
+
+    egress:
+      - {}
+
+  app-1-netpol:
+    endpointSelector:
+      matchLabels:
+        app: app-1
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: app-2
+          - matchLabels:
+              app: app-3
+
+    egress:
+      - {}
+
+  app-2-netpol:
+    endpointSelector:
+      matchLabels:
+        app: app-2
+
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: app-1
+
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              app: app-3
+        toPorts:
+          - ports:
+              - port: "80"
+
+  app-3-netpol:
+    endpointSelector:
+      matchLabels:
+        app: app-3
+
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: app-1
+          - matchLabels:
+              app: app-2
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              app: app-1
+        toPorts:
+          - ports:
+              - port: "5321"
+                protocol: UDP
