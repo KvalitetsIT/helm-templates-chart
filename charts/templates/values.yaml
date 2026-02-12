@@ -7,6 +7,3 @@ networkPolicies: {}
 
 # -- Map of CiliumNetworkPolicy resources to render.
 cilliumNetworkPolicies: {}
-
-
-newFeature: {}
