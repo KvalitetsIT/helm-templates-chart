@@ -93,3 +93,14 @@ ciliumNetworkPolicies:
           - ports:
               - port: "443"
                 protocol: TCP
+
+# -- Map of Kubernetes resources to render as-is.
+# Each key becomes the default metadata.name if not provided.
+# @default -- {}
+# @section -- Resources
+resources:
+  example:
+    apiVersion: v1
+    kind: ConfigMap
+    data:
+      value: hello
