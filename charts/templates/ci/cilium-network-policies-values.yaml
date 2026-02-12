@@ -59,3 +59,15 @@ ciliumNetworkPolicies:
           - ports:
               - port: "5321"
                 protocol: UDP
+
+  dns-policy:
+    description: "Allow egress DNS traffic to kube-dns"
+    endpointSelector: {}
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              k8s-app: kube-dns
+        toPorts:
+          - ports:
+              - port: "53"
+                protocol: UDP

@@ -27,8 +27,9 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| ciliumNetworkPolicies | object | {} | Map of CiliumNetworkPolicy resources to render (Cilium CRDs). See [Cilium Network Policies examples](#cilium-network-policies) for usage. |
 | ciliumNetworkPolicies.\<example-cnp>.description | string | "" | Optional. Description of the Cilium Network Policy. |
-| ciliumNetworkPolicies.\<example-cnp>.endpointSelector.matchLabels | object | {} | Required. Endpoint selector for the policy. Use {} to select all endpoints. |
+| ciliumNetworkPolicies.\<example-cnp>.endpointSelector | object | {} | Required. Endpoint selector for the policy. Use {} to select all endpoints. |
 | ciliumNetworkPolicies.\<example-cnp>.ingress | list | [] | Optional. Ingress rules for the policy. |
 | ciliumNetworkPolicies.\<example-cnp>.egress | list | [] | Optional. Egress rules for the policy. |
 
@@ -37,18 +38,17 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | networkPolicies | object | {} | Map of Kubernetes NetworkPolicy resources to render. Each top-level key becomes the NetworkPolicy name. |
-| ciliumNetworkPolicies | object | {} | Map of CiliumNetworkPolicy resources to render (Cilium CRDs). Each top-level key becomes the CiliumNetworkPolicy name. |
 
 ## Usage
 
-This is a generic resource chart. 
+This is a generic resource chart.
 By default, it renders nothing.
 
 Define resources like the sections below to enable rendering.
 
 ### Sealed Secrets
 
-Renders Bitnami `SealedSecret` resources. 
+Renders Bitnami `SealedSecret` resources.
 Each entry requires `encryptedData`. The `template` block is optional.
 
 #### Examples:
@@ -85,6 +85,90 @@ sealedSecrets:
     template:
       data:
         conn_string: "postgresql://user:{{ .password }}@localhost/mydatabase"
+
+```
+
+### Cilium Network Policies
+
+Renders Cilium `CiliumNetworkPolicy` resources.
+Each entry requires `endpointSelector`. The other fields is optional.
+
+#### Examples:
+
+```yaml
+ciliumNetworkPolicies:
+  default-deny:
+    description: "Default deny all ingress and egress traffic"
+    endpointSelector: {}
+    ingress:
+      - {}
+
+    egress:
+      - {}
+
+  app-1-netpol:
+    endpointSelector:
+      matchLabels:
+        app: app-1
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: app-2
+          - matchLabels:
+              app: app-3
+
+    egress:
+      - {}
+
+  app-2-netpol:
+    endpointSelector:
+      matchLabels:
+        app: app-2
+
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: app-1
+
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              app: app-3
+        toPorts:
+          - ports:
+              - port: "80"
+
+  app-3-netpol:
+    endpointSelector:
+      matchLabels:
+        app: app-3
+
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: app-1
+          - matchLabels:
+              app: app-2
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              app: app-1
+        toPorts:
+          - ports:
+              - port: "5321"
+                protocol: UDP
+
+  dns-policy:
+    description: "Allow egress DNS traffic to kube-dns"
+    endpointSelector: {}
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              k8s-app: kube-dns
+        toPorts:
+          - ports:
+              - port: "53"
+                protocol: UDP
 
 ```
 
