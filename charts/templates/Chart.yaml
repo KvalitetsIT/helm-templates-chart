@@ -1,0 +1,12 @@
+apiVersion: v2
+name: templates
+description: >
+  Generic Helm chart for rendering Kubernetes resources from values.
+  The chart renders nothing by default; resources are created only when explicitly configured.
+type: application
+version: 1.0.0
+appVersion: 1.0.0
+maintainers:
+  - name: KvalitetsIT
+    email: kithosting@kvalitetsit.dk
+    url: https://github.com/KvalitetsIT/helm-repo

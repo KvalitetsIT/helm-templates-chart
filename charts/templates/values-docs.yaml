@@ -1,0 +1,50 @@
+# -- Map of SealedSecret resources.
+# Each key becomes the SealedSecret name.
+# See [Sealed Secrets examples](#sealed-secrets) for usage.
+# @default -- {}
+# @section -- Sealed Secrets
+sealedSecrets:
+
+  '\<example-secret>':
+
+    encryptedData:
+      # -- Required. Encrypted secret data.
+      # @default -- {}
+      # @section -- Sealed Secrets
+      '\<secret-key>': <sealed-value>
+
+    template:
+      # -- Optional. Kubernetes Secret type.
+      # @default -- "Opaque"
+      # @section -- Sealed Secrets
+      type: Opaque
+
+      metadata:
+        # -- Optional. Additional labels for the Secret template.
+        # common.labels are always included.
+        # @default -- {}
+        # @section -- Sealed Secrets
+        labels:
+          <label-key>: <label-value>
+
+        # -- Optional. Annotations for the Secret template metadata.
+        # @default -- {}
+        # @section -- Sealed Secrets
+        annotations:
+          <annotation-key>: <annotation-value>
+
+      data:
+        # -- Optional. Additional data fields for the Secret template.
+        # @default -- {}
+        # @section -- Sealed Secrets
+        '\<data-key>': <data-value>
+
+# -- Map of Kubernetes NetworkPolicy resources to render.
+# Each top-level key becomes the NetworkPolicy name.
+# @default -- {}
+networkPolicies: {}
+
+# -- Map of CiliumNetworkPolicy resources to render (Cilium CRDs).
+# Each top-level key becomes the CiliumNetworkPolicy name.
+# @default -- {}
+cilliumNetworkPolicies: {}
