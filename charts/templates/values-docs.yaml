@@ -47,4 +47,41 @@ networkPolicies: {}
 # -- Map of CiliumNetworkPolicy resources to render (Cilium CRDs).
 # Each top-level key becomes the CiliumNetworkPolicy name.
 # @default -- {}
-ciliumNetworkPolicies: {}
+ciliumNetworkPolicies:
+  '\<example-cnp>':
+    # -- Optional. Description of the Cilium Network Policy.
+    # @default -- ""
+    # @section -- Cilium Network Policies
+    description: <description-of-policy>
+
+    endpointSelector:
+      # -- Required. Endpoint selector for the policy.
+      # Use {} to select all endpoints.
+      # @default -- {}
+      # @section -- Cilium Network Policies
+      matchLabels:
+        '\<label-key>': <label-value>
+
+    # -- Optional. Ingress rules for the policy.
+    # @default -- []
+    # @section -- Cilium Network Policies
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              '\<label-key>': <label-value>
+        toPorts:
+          - ports:
+              - port: "80"
+                protocol: TCP
+
+    # -- Optional. Egress rules for the policy.
+    # @default -- []
+    # @section -- Cilium Network Policies
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              '\<label-key>': <label-value>
+        toPorts:
+          - ports:
+              - port: "443"
+                protocol: TCP

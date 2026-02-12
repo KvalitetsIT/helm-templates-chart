@@ -23,6 +23,15 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | sealedSecrets.\<example-secret>.template.metadata.annotations | object | {} | Optional. Annotations for the Secret template metadata. |
 | sealedSecrets.\<example-secret>.template.data.\<data-key> | string | {} | Optional. Additional data fields for the Secret template. |
 
+### Cilium Network Policies
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| ciliumNetworkPolicies.\<example-cnp>.description | string | "" | Optional. Description of the Cilium Network Policy. |
+| ciliumNetworkPolicies.\<example-cnp>.endpointSelector.matchLabels | object | {} | Required. Endpoint selector for the policy. Use {} to select all endpoints. |
+| ciliumNetworkPolicies.\<example-cnp>.ingress | list | [] | Optional. Ingress rules for the policy. |
+| ciliumNetworkPolicies.\<example-cnp>.egress | list | [] | Optional. Egress rules for the policy. |
+
 ### Other Values
 
 | Key | Type | Default | Description |
