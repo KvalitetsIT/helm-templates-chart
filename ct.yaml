@@ -3,5 +3,5 @@ remote: origin
 target-branch: main
 chart-dirs:
   - charts/
-helm-extra-args: --timeout 600s
+helm-extra-args: --timeout 600s --api-versions cilium.io/v2/CiliumNetworkPolicy,bitnami.com/v1alpha1/SealedSecret
 all: true
