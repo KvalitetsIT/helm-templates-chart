@@ -1,0 +1,50 @@
+{{- range $name, $value := .Values.ciliumNetworkPolicies }}
+{{- if not (hasKey $value "endpointSelector") }}
+  {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}
+{{- end }}
+
+{{- include "cnp.applyDefaultPorts" $value }}
+{{- $ingressRules := $value.ingress | default (list) }}
+{{- $egressRules := $value.egress | default (list) }}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ $name | quote }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    {{- include "common.labels" $ | nindent 4 }}
+spec:
+  {{- with $value.description }}
+  description: {{ . | quote }}
+  {{- end }}
+  {{- if $egressRules }}
+  egress:
+    {{- toYaml $egressRules | nindent 4 }}
+  {{- end }}
+  {{- if $value.egressDeny }}
+  egressDeny:
+    {{- toYaml $value.egressDeny | nindent 4 }}
+  {{- end }}
+  {{- if $value.enableDefaultDeny }}
+  enableDefaultDeny:
+    {{- toYaml $value.enableDefaultDeny | nindent 4 }}
+  {{- end }}
+  endpointSelector: {{- toYaml $value.endpointSelector | nindent 4 }}
+  {{- if $ingressRules }}
+  ingress:
+    {{- toYaml $ingressRules | nindent 4 }}
+  {{- end }}
+  {{- if $value.ingressDeny }}
+  ingressDeny:
+    {{- toYaml $value.ingressDeny | nindent 4 }}
+  {{- end }}
+  {{- if $value.labels }}
+  labels:
+    {{- toYaml $value.labels | nindent 4 }}
+  {{- end }}
+  {{- if $value.log }}
+  log:
+    {{- toYaml $value.log | nindent 4 }}
+  {{- end }}
+{{- end }}

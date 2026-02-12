@@ -17,20 +17,31 @@
 
 ## Usage
 
-This is a generic resource chart.  
+This is a generic resource chart.
 By default, it renders nothing.
 
 Define resources like the sections below to enable rendering.
 
 ### Sealed Secrets
 
-Renders Bitnami `SealedSecret` resources.  
+Renders Bitnami `SealedSecret` resources.
 Each entry requires `encryptedData`. The `template` block is optional.
 
 #### Examples:
 
 ```yaml
 {{ (.Files.Get "ci/sealed-secrets-values.yaml") }}
+```
+
+### Cilium Network Policies
+
+Renders Cilium `CiliumNetworkPolicy` resources.
+Each entry requires `endpointSelector`. The other fields is optional.
+
+#### Examples:
+
+```yaml
+{{ (.Files.Get "ci/cilium-network-policies-values.yaml") }}
 ```
 
 {{ template "helm-docs.versionFooter" . }}
