@@ -1,3 +1,7 @@
+{{- if not (.Capabilities.APIVersions.Has "cilium.io/v2/CiliumNetworkPolicy") }}
+{{- fail "CiliumNetworkPolicy CRD is not installed in the cluster. Please install Cilium before applying CiliumNetworkPolicy resources." }}
+{{- end }}
+
 {{- range $name, $value := .Values.ciliumNetworkPolicies }}
 {{- if not (hasKey $value "endpointSelector") }}
   {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}
