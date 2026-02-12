@@ -36,8 +36,9 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
 
 {{- define "np.applyDefaultPortProtocols" -}}
 {{- range (concat (.ingress | default (list)) (.egress | default (list))) -}}
-{{- range (.ports | default (list)) -}}
-{{- $_ := set . "protocol" (default "TCP" .protocol) -}}
-{{- end -}}
+  {{- range (.ports | default (list)) -}}
+    {{- $_ := set . "protocol" (default "TCP" .protocol) -}}
+    {{- $_ := set . "port" (required "Port is required" .port | toString) -}}
+  {{- end -}}
 {{- end -}}
 {{- end }}
