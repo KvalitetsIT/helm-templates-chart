@@ -53,17 +53,20 @@ jobs:
         uses: helm/kind-action@92086f6be054225fa813e0a4b13787fc9088faab # v1.13.0
         if: steps.list-changed.outputs.changed == 'true'
 
-      - name: Install SealedSecrets CRD
+      - name: Install CRDs
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          kubectl apply -f https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/refs/tags/v0.34.0/helm/sealed-secrets/crds/bitnami.com_sealedsecrets.yaml
-          kubectl wait --for=jsonpath='{.status.conditions[?(@.type=="Established")].status}'=True --timeout=60s crd/sealedsecrets.bitnami.com
+          wait_for_crd() {
+            local crd="$1"
+            kubectl wait --for=condition=Established --timeout=60s "crd/${crd}" \
+              || kubectl wait --for=condition=Established --timeout=60s "crd/${crd}"
+          }
 
-      - name: Install CiliumNetworkPolicy CRD
-        if: steps.list-changed.outputs.changed == 'true'
-        run: |
+          kubectl apply -f https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/refs/tags/v0.34.0/helm/sealed-secrets/crds/bitnami.com_sealedsecrets.yaml
+          wait_for_crd sealedsecrets.bitnami.com
+
           kubectl apply -f https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.19.0/pkg/k8s/apis/cilium.io/client/crds/v2/ciliumnetworkpolicies.yaml
-          kubectl wait --for=jsonpath='{.status.conditions[?(@.type=="Established")].status}'=True --timeout=60s crd/ciliumnetworkpolicies.cilium.io
+          wait_for_crd ciliumnetworkpolicies.cilium.io
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
