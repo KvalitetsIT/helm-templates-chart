@@ -25,6 +25,15 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | sealedSecrets.\<example-secret>.template.metadata.annotations | object | {} | Optional. Annotations for the Secret template metadata. |
 | sealedSecrets.\<example-secret>.template.data.\<data-key> | string | {} | Optional. Additional data fields for the Secret template. |
 
+### Network Policies
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| networkPolicies.\<example-network-policy>.podSelector | object | {} | Required. Pod selector for the policy. Use {} to select all pods. |
+| networkPolicies.\<example-network-policy>.policyTypes | list | [] | Optional. Policy types for the NetworkPolicy. |
+| networkPolicies.\<example-network-policy>.ingress | list | [] | Optional. Ingress rules for the policy. |
+| networkPolicies.\<example-network-policy>.egress | list | [] | Optional. Egress rules for the policy. |
+
 ### Cilium Network Policies
 
 | Key | Type | Default | Description |

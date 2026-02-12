@@ -53,7 +53,45 @@ sealedSecrets:
 # -- Map of Kubernetes NetworkPolicy resources to render.
 # Each top-level key becomes the NetworkPolicy name.
 # @default -- {}
-networkPolicies: {}
+networkPolicies:
+  '\<example-network-policy>':
+    # -- Required. Pod selector for the policy. Use {} to select all pods.
+    # @default -- {}
+    # @section -- Network Policies
+    podSelector:
+      matchLabels:
+        '\<label-key>': <label-value>
+
+    # -- Optional. Policy types for the NetworkPolicy.
+    # @default -- []
+    # @section -- Network Policies
+    policyTypes:
+      - Ingress
+      - Egress
+
+    # -- Optional. Ingress rules for the policy.
+    # @default -- []
+    # @section -- Network Policies
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                '\<label-key>': <label-value>
+        ports:
+          - port: 80
+            protocol: TCP
+
+    # -- Optional. Egress rules for the policy.
+    # @default -- []
+    # @section -- Network Policies
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                '\<label-key>': <label-value>
+        ports:
+          - port: 443
+            protocol: TCP
 
 # -- Map of CiliumNetworkPolicy resources to render (Cilium CRDs).
 # See [Cilium Network Policies examples](#cilium-network-policies) for usage.
