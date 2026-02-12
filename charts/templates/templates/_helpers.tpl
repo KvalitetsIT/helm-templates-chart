@@ -32,3 +32,12 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
 {{- end -}}
 {{- toYaml $metadata -}}
 {{- end }}
+
+
+{{- define "np.applyDefaultPortProtocols" -}}
+{{- range (concat (.ingress | default (list)) (.egress | default (list))) -}}
+{{- range (.ports | default (list)) -}}
+{{- $_ := set . "protocol" (default "TCP" .protocol) -}}
+{{- end -}}
+{{- end -}}
+{{- end }}
