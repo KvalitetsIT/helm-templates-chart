@@ -57,13 +57,15 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         run: |
           kubectl apply -f https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/refs/tags/v0.34.0/helm/sealed-secrets/crds/bitnami.com_sealedsecrets.yaml
+          kubectl wait --for=jsonpath='{.status.conditions[?(@.type=="Established")].status}'=True --timeout=60s crd/sealedsecrets.bitnami.com
 
       - name: Install CiliumNetworkPolicy CRD
         if: steps.list-changed.outputs.changed == 'true'
         run: |
           kubectl apply -f https://raw.githubusercontent.com/cilium/cilium/refs/tags/v1.19.0/pkg/k8s/apis/cilium.io/client/crds/v2/ciliumnetworkpolicies.yaml
+          kubectl wait --for=jsonpath='{.status.conditions[?(@.type=="Established")].status}'=True --timeout=60s crd/ciliumnetworkpolicies.cilium.io
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          ct install --config ct.yaml 
+          ct install --config ct.yaml
