@@ -9,6 +9,7 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
   {{- range (.toPorts | default (list)) -}}
     {{- range (.ports | default (list)) -}}
      {{- $_ := set . "protocol" (default "TCP" .protocol) -}}
+    {{- $_ := set . "port" (required "Port is required" .port | toString) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
