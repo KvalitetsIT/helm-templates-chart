@@ -28,7 +28,7 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | networkPolicies | object | {} | Map of Kubernetes NetworkPolicy resources to render. Each top-level key becomes the NetworkPolicy name. |
-| cilliumNetworkPolicies | object | {} | Map of CiliumNetworkPolicy resources to render (Cilium CRDs). Each top-level key becomes the CiliumNetworkPolicy name. |
+| ciliumNetworkPolicies | object | {} | Map of CiliumNetworkPolicy resources to render (Cilium CRDs). Each top-level key becomes the CiliumNetworkPolicy name. |
 
 ## Usage
 

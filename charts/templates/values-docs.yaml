@@ -47,4 +47,4 @@ networkPolicies: {}
 # -- Map of CiliumNetworkPolicy resources to render (Cilium CRDs).
 # Each top-level key becomes the CiliumNetworkPolicy name.
 # @default -- {}
-cilliumNetworkPolicies: {}
+ciliumNetworkPolicies: {}
