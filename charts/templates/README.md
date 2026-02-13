@@ -17,6 +17,8 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | sealedSecrets | object | {} | Map of SealedSecret resources. Each key becomes the SealedSecret name. See [Sealed Secrets examples](#sealed-secrets) for usage. |
+| sealedSecrets.\<example-secret>.metadata.name | string | "" | Optional. Override the rendered SealedSecret name. |
+| sealedSecrets.\<example-secret>.metadata.namespace | string | "" | Optional. Override the rendered SealedSecret namespace. |
 | sealedSecrets.\<example-secret>.encryptedData.\<secret-key> | string | {} | Required. Encrypted secret data. |
 | sealedSecrets.\<example-secret>.template.type | string | "Opaque" | Optional. Kubernetes Secret type. |
 | sealedSecrets.\<example-secret>.template.metadata.labels | object | {} | Optional. Additional labels for the Secret template. common.labels are always included. |
@@ -28,6 +30,8 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | ciliumNetworkPolicies | object | {} | Map of CiliumNetworkPolicy resources to render (Cilium CRDs). See [Cilium Network Policies examples](#cilium-network-policies) for usage. |
+| ciliumNetworkPolicies.\<example-cnp>.metadata.name | string | "" | Optional. Override the rendered CiliumNetworkPolicy name. |
+| ciliumNetworkPolicies.\<example-cnp>.metadata.namespace | string | "" | Optional. Override the rendered CiliumNetworkPolicy namespace. |
 | ciliumNetworkPolicies.\<example-cnp>.description | string | "" | Optional. Description of the Cilium Network Policy. |
 | ciliumNetworkPolicies.\<example-cnp>.endpointSelector | object | {} | Required. Endpoint selector for the policy. Use {} to select all endpoints. |
 | ciliumNetworkPolicies.\<example-cnp>.ingress | list | [] | Optional. Ingress rules for the policy. |
@@ -38,6 +42,8 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | resources | object | {} | Map of Kubernetes resources to render as-is. Each key becomes the default metadata.name if not provided. |
+| resources.example.metadata.name | string | "" | Optional. Override the rendered resource name. |
+| resources.example.metadata.namespace | string | "" | Optional. Override the rendered resource namespace. |
 
 ### Other Values
 
@@ -56,6 +62,7 @@ Define resources like the sections below to enable rendering.
 
 Renders Bitnami `SealedSecret` resources.
 Each entry requires `encryptedData`. The `template` block is optional.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
 
 #### Examples:
 
@@ -92,12 +99,20 @@ sealedSecrets:
       data:
         conn_string: "postgresql://user:{{ .password }}@localhost/mydatabase"
 
+  fifth-secret:
+    encryptedData:
+      ENV_VAR_FIVE: dmVyeS1zZWNyZXQtZW52MDEyMzQ1Njc4OQ==
+    metadata:
+      name: custom-secret-name
+      namespace: custom-namespace
+
 ```
 
 ### Cilium Network Policies
 
 Renders Cilium `CiliumNetworkPolicy` resources.
 Each entry requires `endpointSelector`. The other fields is optional.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
 
 #### Examples:
 
@@ -164,12 +179,30 @@ ciliumNetworkPolicies:
               dns:
                 - matchPattern: "*"
 
+  custom-namespace:
+    metadata:
+      name: custom-namespace-policy
+      namespace: custom-namespace
+    description: "Allow all traffic within the custom namespace"
+    endpointSelector:
+      matchLabels:
+        "k8s:io.kubernetes.pod.namespace": custom-namespace
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              "k8s:io.kubernetes.pod.namespace": custom-namespace
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              "k8s:io.kubernetes.pod.namespace": custom-namespace
+
 ```
 
 ### Resources
 
 Renders arbitrary resources from a map keyed by resource name.
 The key is used as the default `metadata.name` if not provided.
+Override the rendered resource name and namespace with `metadata.name` and `metadata.namespace`.
 
 <details>
 <summary>Example</summary>
@@ -181,11 +214,13 @@ resources:
     kind: ConfigMap
     data:
       value: hello
+
   another:
     apiVersion: v1
     kind: ConfigMap
     metadata:
       name: explicit-name
+      namespace: explicit-namespace
     data:
       value: world
 

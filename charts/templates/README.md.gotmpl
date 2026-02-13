@@ -26,6 +26,7 @@ Define resources like the sections below to enable rendering.
 
 Renders Bitnami `SealedSecret` resources.
 Each entry requires `encryptedData`. The `template` block is optional.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
 
 #### Examples:
 
@@ -37,6 +38,7 @@ Each entry requires `encryptedData`. The `template` block is optional.
 
 Renders Cilium `CiliumNetworkPolicy` resources.
 Each entry requires `endpointSelector`. The other fields is optional.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
 
 #### Examples:
 
@@ -48,6 +50,7 @@ Each entry requires `endpointSelector`. The other fields is optional.
 
 Renders arbitrary resources from a map keyed by resource name.
 The key is used as the default `metadata.name` if not provided.
+Override the rendered resource name and namespace with `metadata.name` and `metadata.namespace`.
 
 <details>
 <summary>Example</summary>
