@@ -4,10 +4,12 @@ resources:
     kind: ConfigMap
     data:
       value: hello
+
   another:
     apiVersion: v1
     kind: ConfigMap
     metadata:
       name: explicit-name
+      namespace: explicit-namespace
     data:
       value: world
