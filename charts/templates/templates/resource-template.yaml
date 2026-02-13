@@ -1,9 +1,6 @@
 {{- range $name, $resource := .Values.resources }}
 {{- $resource := deepCopy $resource }}
 {{- $metadata := (default dict $resource.metadata) }}
-{{- $commonLabels := (include "common.labels" $ | fromYaml) }}
-{{- $labels := (default dict $metadata.labels) }}
-{{- $_ := set $metadata "labels" (merge $commonLabels $labels) }}
 {{- $metadata := (include "common.metadata" (dict "root" $ "metadata" $metadata "name" $name) | fromYaml) }}
 {{- $_ := set $resource "metadata" $metadata }}
 ---
