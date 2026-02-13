@@ -219,8 +219,8 @@ resources:
     apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: explicit-name
-      namespace: explicit-namespace
+      name: custom-name
+      namespace: custom-namespace
     data:
       value: world
 
