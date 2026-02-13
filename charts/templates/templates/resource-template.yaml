@@ -4,9 +4,7 @@
 {{- $commonLabels := (include "common.labels" $ | fromYaml) }}
 {{- $labels := (default dict $metadata.labels) }}
 {{- $_ := set $metadata "labels" (merge $commonLabels $labels) }}
-{{- if not (hasKey $metadata "name") }}
-{{- $_ := set $metadata "name" $name }}
-{{- end }}
+{{- $metadata := (include "common.metadata" (dict "root" $ "metadata" $metadata "name" $name) | fromYaml) }}
 {{- $_ := set $resource "metadata" $metadata }}
 ---
 {{ toYaml $resource }}

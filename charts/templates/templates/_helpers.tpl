@@ -14,3 +14,14 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
   {{- end -}}
 {{- end -}}
 {{- end }}
+
+{{- define "common.metadata" -}}
+{{- $metadata := (default dict .metadata) -}}
+{{- if and .name (not (hasKey $metadata "name")) -}}
+{{- $_ := set $metadata "name" .name -}}
+{{- end -}}
+{{- if and .namespace (not (hasKey $metadata "namespace")) -}}
+{{- $_ := set $metadata "namespace" .namespace -}}
+{{- end -}}
+{{- toYaml $metadata -}}
+{{- end }}

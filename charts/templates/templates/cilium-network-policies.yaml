@@ -6,12 +6,14 @@
 {{- include "cnp.applyDefaultPorts" $value }}
 {{- $ingressRules := $value.ingress | default (list) }}
 {{- $egressRules := $value.egress | default (list) }}
+{{- $metadata := (default dict $value.metadata) }}
+{{- $metadata := (include "common.metadata" (dict "root" $ "metadata" $metadata "name" $name "namespace" $.Release.Namespace) | fromYaml) }}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ $name | quote }}
-  namespace: {{ $.Release.Namespace | quote }}
+  name: {{ $metadata.name | quote }}
+  namespace: {{ $metadata.namespace | quote }}
   labels:
     {{- include "common.labels" $ | nindent 4 }}
 spec:
