@@ -46,6 +46,18 @@ You can override the rendered resource name and namespace via `metadata.name` an
 {{ (.Files.Get "ci/cilium-network-policies-values.yaml") }}
 ```
 
+### Network Policies
+
+Renders Kubernetes `NetworkPolicy` resources.
+Each entry requires `podSelector`. The other fields are optional.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
+
+#### Examples:
+
+```yaml
+{{ (.Files.Get "ci/network-policies-values.yaml") }}
+```
+
 ### Resources
 
 Renders arbitrary resources from a map keyed by resource name.

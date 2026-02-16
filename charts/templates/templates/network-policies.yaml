@@ -1,0 +1,36 @@
+{{- range $name, $value := .Values.networkPolicies }}
+{{- if not (hasKey $value "podSelector") }}
+  {{- fail (printf "networkPolicies.%s.podSelector is required (use {} for all pods)" $name) }}
+{{- end }}
+
+{{- include "np.applyDefaultPortProtocols" $value }}
+{{- $ingressRules := $value.ingress | default (list) }}
+{{- $egressRules := $value.egress | default (list) }}
+{{- $metadata := (include "common.metadata" (dict "root" $ "metadata" (default dict $value.metadata) "name" $name) | fromYaml) }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $metadata.name | quote }}
+  namespace: {{ $metadata.namespace | quote }}
+  labels:
+    {{- toYaml $metadata.labels | nindent 4 }}
+  {{- with $metadata.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  podSelector: {{- toYaml $value.podSelector | nindent 4 }}
+  {{- with $value.policyTypes }}
+  policyTypes:
+    {{- toYaml $value.policyTypes | nindent 4 }}
+  {{- end }}
+  {{- if $ingressRules }}
+  ingress:
+    {{- toYaml $ingressRules | nindent 4 }}
+  {{- end }}
+  {{- if $egressRules }}
+  egress:
+    {{- toYaml $egressRules | nindent 4 }}
+  {{- end }}
+{{- end }}
