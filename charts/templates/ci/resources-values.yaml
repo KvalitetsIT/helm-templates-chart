@@ -1,0 +1,15 @@
+resources:
+  example:
+    apiVersion: v1
+    kind: ConfigMap
+    data:
+      value: hello
+
+  another:
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: custom-name
+      namespace: custom-namespace
+    data:
+      value: world

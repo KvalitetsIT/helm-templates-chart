@@ -59,3 +59,20 @@ ciliumNetworkPolicies:
             rules:
               dns:
                 - matchPattern: "*"
+
+  custom-namespace:
+    metadata:
+      name: custom-namespace-policy
+      namespace: custom-namespace
+    description: "Allow all traffic within the custom namespace"
+    endpointSelector:
+      matchLabels:
+        "k8s:io.kubernetes.pod.namespace": custom-namespace
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              "k8s:io.kubernetes.pod.namespace": custom-namespace
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              "k8s:io.kubernetes.pod.namespace": custom-namespace

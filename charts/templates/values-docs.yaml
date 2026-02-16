@@ -7,6 +7,17 @@ sealedSecrets:
 
   '\<example-secret>':
 
+    metadata:
+      # -- Optional. Override the rendered SealedSecret name.
+      # @default -- ""
+      # @section -- Sealed Secrets
+      name: <override-name>
+
+      # -- Optional. Override the rendered SealedSecret namespace.
+      # @default -- ""
+      # @section -- Sealed Secrets
+      namespace: <override-namespace>
+
     encryptedData:
       # -- Required. Encrypted secret data.
       # @default -- {}
@@ -50,6 +61,16 @@ networkPolicies: {}
 # @section -- Cilium Network Policies
 ciliumNetworkPolicies:
   '\<example-cnp>':
+    metadata:
+      # -- Optional. Override the rendered CiliumNetworkPolicy name.
+      # @default -- ""
+      # @section -- Cilium Network Policies
+      name: <override-name>
+
+      # -- Optional. Override the rendered CiliumNetworkPolicy namespace.
+      # @default -- ""
+      # @section -- Cilium Network Policies
+      namespace: <override-namespace>
     # -- Optional. Description of the Cilium Network Policy.
     # @default -- ""
     # @section -- Cilium Network Policies
@@ -93,3 +114,24 @@ ciliumNetworkPolicies:
           - ports:
               - port: "443"
                 protocol: TCP
+
+# -- Map of Kubernetes resources to render as-is.
+# Each key becomes the default metadata.name if not provided.
+# @default -- {}
+# @section -- Resources
+resources:
+  example:
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      # -- Optional. Override the rendered resource name.
+      # @default -- ""
+      # @section -- Resources
+      name: <override-name>
+
+      # -- Optional. Override the rendered resource namespace.
+      # @default -- ""
+      # @section -- Resources
+      namespace: <override-namespace>
+    data:
+      value: hello

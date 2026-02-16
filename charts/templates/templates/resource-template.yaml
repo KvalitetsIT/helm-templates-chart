@@ -1,0 +1,8 @@
+{{- range $name, $resource := .Values.resources }}
+{{- $resource := deepCopy $resource }}
+{{- $metadata := (default dict $resource.metadata) }}
+{{- $metadata := (include "common.metadata" (dict "root" $ "metadata" $metadata "name" $name) | fromYaml) }}
+{{- $_ := set $resource "metadata" $metadata }}
+---
+{{ toYaml $resource }}
+{{- end }}
