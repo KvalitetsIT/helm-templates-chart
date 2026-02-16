@@ -207,6 +207,99 @@ ciliumNetworkPolicies:
 
 ```
 
+### Network Policies
+
+Renders Kubernetes `NetworkPolicy` resources.
+Each entry requires `podSelector`. The other fields are optional.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
+
+#### Examples:
+
+```yaml
+networkPolicies:
+  default-deny:
+    podSelector: {}
+    policyTypes:
+      - Ingress
+      - Egress
+
+  app-1-netpol:
+    podSelector:
+      matchLabels:
+        app: app-1
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: app-2
+          - podSelector:
+              matchLabels:
+                app: app-3
+    egress:
+      - {}
+
+  app-2-netpol:
+    podSelector:
+      matchLabels:
+        app: app-2
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: app-1
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                app: app-3
+        ports:
+          - port: 80
+
+  app-3-netpol:
+    podSelector:
+      matchLabels:
+        app: app-3
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: app-1
+          - podSelector:
+              matchLabels:
+                app: app-2
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                app: app-1
+        ports:
+          - port: 5321
+            protocol: UDP
+
+  custom-namespace-and-labels:
+    metadata:
+      name: custom-netpol
+      namespace: custom-namespace
+      labels:
+        custom-label: custom-value
+    podSelector:
+      matchLabels:
+        app: app-1
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: app-2
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                app: app-3
+        ports:
+          - port: 80
+
+```
+
 ### Resources
 
 Renders arbitrary resources from a map keyed by resource name.

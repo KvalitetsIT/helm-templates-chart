@@ -57,3 +57,25 @@ networkPolicies:
         ports:
           - port: 5321
             protocol: UDP
+
+  custom-namespace-and-labels:
+    metadata:
+      name: custom-netpol
+      namespace: custom-namespace
+      labels:
+        custom-label: custom-value
+    podSelector:
+      matchLabels:
+        app: app-1
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: app-2
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                app: app-3
+        ports:
+          - port: 80
