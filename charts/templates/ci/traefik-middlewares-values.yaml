@@ -1,0 +1,17 @@
+traefikMiddlewares:
+  deny-v1-internal:
+    spec:
+      ipAllowList:
+        sourceRange: []
+
+  allow-office-and-vpn:
+    metadata:
+      name: allow-office-and-vpn
+      namespace: edge
+      labels:
+        owner: platform
+    spec:
+      ipAllowList:
+        sourceRange:
+          - 192.0.2.10/32
+          - 198.51.100.0/24
