@@ -327,7 +327,7 @@ traefikMiddlewares:
   allow-office-and-vpn:
     metadata:
       name: allow-office-and-vpn
-      namespace: edge
+      namespace: custom-namespace
       labels:
         owner: platform
     spec:
