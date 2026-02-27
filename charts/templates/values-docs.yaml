@@ -153,6 +153,31 @@ ciliumNetworkPolicies:
               - port: "443"
                 protocol: TCP
 
+# -- Map of Traefik Middleware resources to render (Traefik CRDs).
+# See [Traefik Middlewares examples](#traefik-middlewares) for usage.
+# @default -- {}
+# @section -- Traefik Middlewares
+traefikMiddlewares:
+  '\<example-middleware>':
+    metadata:
+      # -- Optional. Override the rendered Middleware name.
+      # @default -- ""
+      # @section -- Traefik Middlewares
+      name: <override-name>
+
+      # -- Optional. Override the rendered Middleware namespace.
+      # @default -- ""
+      # @section -- Traefik Middlewares
+      namespace: <override-namespace>
+
+    # -- Required. Middleware spec.
+    # @default -- {}
+    # @section -- Traefik Middlewares
+    spec:
+      ipAllowList:
+        sourceRange:
+          - 10.0.0.0/8
+
 # -- Map of Kubernetes resources to render as-is.
 # Each key becomes the default metadata.name if not provided.
 # @default -- {}

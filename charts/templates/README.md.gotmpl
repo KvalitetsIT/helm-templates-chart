@@ -58,6 +58,18 @@ You can override the rendered resource name and namespace via `metadata.name` an
 {{ (.Files.Get "ci/network-policies-values.yaml") }}
 ```
 
+### Traefik Middlewares
+
+Renders Traefik `Middleware` resources (`traefik.io/v1alpha1`).
+Each entry requires `spec`.
+You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
+
+#### Examples:
+
+```yaml
+{{ (.Files.Get "ci/traefik-middlewares-values.yaml") }}
+```
+
 ### Resources
 
 Renders arbitrary resources from a map keyed by resource name.
