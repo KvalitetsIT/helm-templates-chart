@@ -76,13 +76,8 @@ Renders arbitrary resources from a map keyed by resource name.
 The key is used as the default `metadata.name` if not provided.
 Override the rendered resource name and namespace with `metadata.name` and `metadata.namespace`.
 
-<details>
-<summary>Example</summary>
-
 ```yaml
 {{ (.Files.Get "ci/resources-values.yaml") }}
 ```
-
-</details>
 
 {{ template "helm-docs.versionFooter" . }}
