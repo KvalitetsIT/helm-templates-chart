@@ -1,4 +1,7 @@
-{{- range $name, $value := .Values.ciliumNetworkPolicies }}
+{{- $policies := .Values.ciliumNetworkPolicies | default dict }}
+{{- range $name, $value := $policies }}
+{{- if $value }}
+
 {{- if not (hasKey $value "endpointSelector") }}
   {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}
 {{- end }}
@@ -35,7 +38,8 @@ spec:
   enableDefaultDeny:
     {{- toYaml $value.enableDefaultDeny | nindent 4 }}
   {{- end }}
-  endpointSelector: {{- toYaml $value.endpointSelector | nindent 4 }}
+  endpointSelector:
+    {{- toYaml $value.endpointSelector | nindent 4 }}
   {{- if $ingressRules }}
   ingress:
     {{- toYaml $ingressRules | nindent 4 }}
@@ -52,4 +56,5 @@ spec:
   log:
     {{- toYaml $value.log | nindent 4 }}
   {{- end }}
+{{- end }}
 {{- end }}

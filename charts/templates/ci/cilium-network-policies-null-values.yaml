@@ -1,0 +1,3 @@
+ciliumNetworkPolicies:
+  # Disable a default policy from values.yaml by setting it to null
+  default-deny: null

@@ -4,11 +4,18 @@
 
 Generic Helm chart for rendering Kubernetes resources from values. The chart renders nothing by default; resources are created only when explicitly configured.
 
+**Homepage:** <https://github.com/KvalitetsIT>
+
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
 | KvalitetsIT | <kithosting@kvalitetsit.dk> | <https://github.com/KvalitetsIT/helm-repo> |
+
+## Source Code
+
+* <https://github.com/KvalitetsIT/helm-templates-chart>
+* <https://github.com/KvalitetsIT/helm-templates-chart/tree/main/charts/templates>
 
 ## Values
 
