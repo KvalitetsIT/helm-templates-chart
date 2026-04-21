@@ -8,9 +8,6 @@ networkPolicies: {}
 # -- Map of CiliumNetworkPolicy resources to render.
 ciliumNetworkPolicies: {}
 
-# -- Map of Traefik Middleware resources to render.
-traefikMiddlewares: {}
-
 # -- Map of Kubernetes resources to render as-is.
 # Each key becomes the default metadata.name if not provided.
 resources: {}
