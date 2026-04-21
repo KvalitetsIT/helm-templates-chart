@@ -1,0 +1,15 @@
+ciliumNetworkPolicies:
+  disabled-policy:
+    enabled: false
+
+networkPolicies:
+  disabled-policy:
+    enabled: false
+
+sealedSecrets:
+  disabled-secret:
+    enabled: false
+
+resources:
+  disabled-configmap:
+    enabled: false
