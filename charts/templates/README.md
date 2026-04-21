@@ -51,15 +51,6 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | ciliumNetworkPolicies.\<example-cnp>.ingress | list | [] | Optional. Ingress rules for the policy. |
 | ciliumNetworkPolicies.\<example-cnp>.egress | list | [] | Optional. Egress rules for the policy. |
 
-### Traefik Middlewares
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| traefikMiddlewares | object | {} | Map of Traefik Middleware resources to render (Traefik CRDs). See [Traefik Middlewares examples](#traefik-middlewares) for usage. |
-| traefikMiddlewares.\<example-middleware>.metadata.name | string | "" | Optional. Override the rendered Middleware name. |
-| traefikMiddlewares.\<example-middleware>.metadata.namespace | string | "" | Optional. Override the rendered Middleware namespace. |
-| traefikMiddlewares.\<example-middleware>.spec | object | {} | Required. Middleware spec. |
-
 ### Resources
 
 | Key | Type | Default | Description |
@@ -311,35 +302,6 @@ networkPolicies:
                 app: app-3
         ports:
           - port: 80
-
-```
-
-### Traefik Middlewares
-
-Renders Traefik `Middleware` resources (`traefik.io/v1alpha1`).
-Each entry requires `spec`.
-You can override the rendered resource name and namespace via `metadata.name` and `metadata.namespace`.
-
-#### Examples:
-
-```yaml
-traefikMiddlewares:
-  deny-v1-internal:
-    spec:
-      ipAllowList:
-        sourceRange: []
-
-  allow-office-and-vpn:
-    metadata:
-      name: allow-office-and-vpn
-      namespace: custom-namespace
-      labels:
-        owner: platform
-    spec:
-      ipAllowList:
-        sourceRange:
-          - 192.0.2.10/32
-          - 198.51.100.0/24
 
 ```
 
