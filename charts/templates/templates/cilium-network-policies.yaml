@@ -1,6 +1,6 @@
 {{- $policies := .Values.ciliumNetworkPolicies | default dict }}
 {{- range $name, $value := $policies }}
-{{- if $value }}
+{{- if and $value (ne $value.enabled false) }}
 
 {{- if not (hasKey $value "endpointSelector") }}
   {{- fail (printf "ciliumNetworkPolicies.%s.endpointSelector is required (use {} for all endpoints)" $name) }}

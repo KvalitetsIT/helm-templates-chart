@@ -1,6 +1,6 @@
 {{- $policies := .Values.networkPolicies | default dict }}
 {{- range $name, $value := $policies }}
-{{- if $value }}
+{{- if and $value (ne $value.enabled false) }}
 
 {{- if not (hasKey $value "podSelector") }}
   {{- fail (printf "networkPolicies.%s.podSelector is required (use {} for all pods)" $name) }}
