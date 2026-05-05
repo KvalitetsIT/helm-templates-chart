@@ -28,25 +28,25 @@ spec:
   {{- end }}
   {{- if $egressRules }}
   egress:
-    {{- toYaml $egressRules | nindent 4 }}
+    {{- tpl (toYaml $egressRules) $ | nindent 4 }}
   {{- end }}
   {{- if $value.egressDeny }}
   egressDeny:
-    {{- toYaml $value.egressDeny | nindent 4 }}
+    {{- tpl (toYaml $value.egressDeny) $ | nindent 4 }}
   {{- end }}
   {{- if $value.enableDefaultDeny }}
   enableDefaultDeny:
     {{- toYaml $value.enableDefaultDeny | nindent 4 }}
   {{- end }}
   endpointSelector:
-    {{- toYaml $value.endpointSelector | nindent 4 }}
+    {{- tpl (toYaml $value.endpointSelector) $ | nindent 4 }}
   {{- if $ingressRules }}
   ingress:
-    {{- toYaml $ingressRules | nindent 4 }}
+    {{- tpl (toYaml $ingressRules) $ | nindent 4 }}
   {{- end }}
   {{- if $value.ingressDeny }}
   ingressDeny:
-    {{- toYaml $value.ingressDeny | nindent 4 }}
+    {{- tpl (toYaml $value.ingressDeny) $ | nindent 4 }}
   {{- end }}
   {{- if $value.labels }}
   labels:

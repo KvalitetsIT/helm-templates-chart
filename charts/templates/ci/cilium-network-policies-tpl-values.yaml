@@ -1,0 +1,39 @@
+ciliumNetworkPolicies:
+  release-frontend-netpol:
+    description: "Allow ingress to the release frontend from its own backend"
+    endpointSelector:
+      matchLabels:
+        app: "{{ .Release.Name }}-frontend"
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: "{{ .Release.Name }}-backend"
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              app: "{{ .Release.Name }}-backend"
+        toPorts:
+          - ports:
+              - port: "8080"
+
+  release-backend-netpol:
+    endpointSelector:
+      matchLabels:
+        app: "{{ .Release.Name }}-backend"
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: "{{ .Release.Name }}-frontend"
+          - matchLabels:
+              app: "{{ .Release.Name }}-worker"
+
+  release-worker-netpol:
+    metadata:
+      name: "{{ .Release.Name }}-worker-netpol"
+    endpointSelector:
+      matchLabels:
+        app: "{{ .Release.Name }}-worker"
+    ingress:
+      - fromEndpoints:
+          - matchLabels:
+              app: "{{ .Release.Name }}-backend"

@@ -9,6 +9,9 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
 {{- if and .name (not (hasKey $metadata "name")) -}}
 {{- $_ := set $metadata "name" .name -}}
 {{- end -}}
+{{- if hasKey $metadata "name" -}}
+{{- $_ := set $metadata "name" (tpl (get $metadata "name") .root) -}}
+{{- end -}}
 {{- $namespace := .namespace | default .root.Release.Namespace -}}
 {{- if and $namespace (not (hasKey $metadata "namespace")) -}}
 {{- $_ := set $metadata "namespace" $namespace -}}

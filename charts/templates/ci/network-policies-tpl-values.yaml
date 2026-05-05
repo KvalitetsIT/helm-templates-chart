@@ -1,0 +1,30 @@
+networkPolicies:
+  release-frontend-netpol:
+    podSelector:
+      matchLabels:
+        app: "{{ .Release.Name }}-frontend"
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: "{{ .Release.Name }}-backend"
+    egress:
+      - to:
+          - podSelector:
+              matchLabels:
+                app: "{{ .Release.Name }}-backend"
+        ports:
+          - port: 8080
+
+  release-backend-netpol:
+    podSelector:
+      matchLabels:
+        app: "{{ .Release.Name }}-backend"
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: "{{ .Release.Name }}-frontend"
+          - podSelector:
+              matchLabels:
+                app: "{{ .Release.Name }}-worker"
