@@ -24,18 +24,18 @@ metadata:
   {{- end }}
 spec:
   podSelector:
-    {{- toYaml $value.podSelector | nindent 4 }}
+    {{- tpl (toYaml $value.podSelector) $ | nindent 4 }}
   {{- with $value.policyTypes }}
   policyTypes:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- if $ingressRules }}
   ingress:
-    {{- toYaml $ingressRules | nindent 4 }}
+    {{- tpl (toYaml $ingressRules) $ | nindent 4 }}
   {{- end }}
   {{- if $egressRules }}
   egress:
-    {{- toYaml $egressRules | nindent 4 }}
+    {{- tpl (toYaml $egressRules) $ | nindent 4 }}
   {{- end }}
 {{- end }}
 {{- end }}

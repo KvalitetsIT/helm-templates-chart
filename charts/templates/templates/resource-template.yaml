@@ -6,6 +6,6 @@
 {{- $metadata := (include "common.metadata" (dict "root" $ "metadata" $metadata "name" $name) | fromYaml) }}
 {{- $_ := set $resource "metadata" $metadata }}
 ---
-{{ toYaml $resource }}
+{{ tpl (toYaml $resource) $ }}
 {{- end }}
 {{- end }}

@@ -1,0 +1,8 @@
+resources:
+  release-configmap:
+    apiVersion: v1
+    kind: ConfigMap
+    data:
+      release-name: "{{ .Release.Name }}"
+      namespace: "{{ .Release.Namespace }}"
+      app-url: "https://{{ .Release.Name }}.{{ .Release.Namespace }}.svc.cluster.local"
