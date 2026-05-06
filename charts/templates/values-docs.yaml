@@ -32,7 +32,7 @@ sealedSecrets:
 
       metadata:
         # -- Optional. Additional labels for the Secret template.
-        # common.labels are always included.
+        # Common labels are always included.
         # @default -- {}
         # @section -- Sealed Secrets
         labels:

@@ -1,10 +1,10 @@
-{{- define "common.labels" -}}
+{{- define "templates.labels" -}}
 app.kubernetes.io/managed-by: "Helm"
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
 {{- end }}
 
-{{- define "common.metadata" -}}
+{{- define "templates.metadata" -}}
 {{- $metadata := (default dict .metadata) -}}
 {{- if and .name (not (hasKey $metadata "name")) -}}
 {{- $_ := set $metadata "name" .name -}}
@@ -16,7 +16,7 @@ helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | quote }}
 {{- if and $namespace (not (hasKey $metadata "namespace")) -}}
 {{- $_ := set $metadata "namespace" $namespace -}}
 {{- end -}}
-{{- $commonLabels := (include "common.labels" .root | fromYaml) -}}
+{{- $commonLabels := (include "templates.labels" .root | fromYaml) -}}
 {{- $customLabels := (default dict .metadata.labels) -}}
 {{- $_ := set $metadata "labels" (merge $customLabels $commonLabels) -}}
 {{- if .metadata.annotations -}}
