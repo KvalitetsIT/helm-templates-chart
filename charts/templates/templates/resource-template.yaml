@@ -3,7 +3,7 @@
 {{- $resource := deepCopy $resource }}
 {{- $_ := unset $resource "enabled" }}
 {{- $metadata := (default dict $resource.metadata) }}
-{{- $metadata := (include "common.metadata" (dict "root" $ "metadata" $metadata "name" $name) | fromYaml) }}
+{{- $metadata := (include "templates.metadata" (dict "root" $ "metadata" $metadata "name" $name) | fromYaml) }}
 {{- $_ := set $resource "metadata" $metadata }}
 ---
 {{ tpl (toYaml $resource) $ }}

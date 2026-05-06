@@ -26,7 +26,7 @@ Generic Helm chart for rendering Kubernetes resources from values. The chart ren
 | sealedSecrets.\<example-secret>.metadata.namespace | string | "" | Optional. Override the rendered SealedSecret namespace. |
 | sealedSecrets.\<example-secret>.encryptedData.\<secret-key> | string | {} | Required. Encrypted secret data. |
 | sealedSecrets.\<example-secret>.template.type | string | "Opaque" | Optional. Kubernetes Secret type. |
-| sealedSecrets.\<example-secret>.template.metadata.labels | object | {} | Optional. Additional labels for the Secret template. common.labels are always included. |
+| sealedSecrets.\<example-secret>.template.metadata.labels | object | {} | Optional. Additional labels for the Secret template. Common labels are always included. |
 | sealedSecrets.\<example-secret>.template.metadata.annotations | object | {} | Optional. Annotations for the Secret template metadata. |
 | sealedSecrets.\<example-secret>.template.data.\<data-key> | string | {} | Optional. Additional data fields for the Secret template. |
 

@@ -9,7 +9,7 @@
 {{- include "cnp.applyDefaultPorts" $value }}
 {{- $ingressRules := $value.ingress | default (list) }}
 {{- $egressRules := $value.egress | default (list) }}
-{{- $metadata := (include "common.metadata" (dict "root" $ "metadata" (default dict $value.metadata) "name" $name) | fromYaml) }}
+{{- $metadata := (include "templates.metadata" (dict "root" $ "metadata" (default dict $value.metadata) "name" $name) | fromYaml) }}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
